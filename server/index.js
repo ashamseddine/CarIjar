@@ -1,5 +1,5 @@
 const server = require("./src/config/server");
-const connection = require("./src/config/connection");
+const connection = require("./src/config/database");
 
 const cluster = require("cluster");
 const os = require("os");

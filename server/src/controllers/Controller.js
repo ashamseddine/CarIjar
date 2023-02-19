@@ -1,11 +1,9 @@
 const responseapi = require("../config/responseapi");
-const { ValidationFailedException } = require("../errors/exceptions");
 
 class Controller {
-  constructor(service, schema) {
+  constructor(service) {
     this.responseapi = responseapi;
     this.service = service;
-    this.schema = schema;
     this.get = this.get.bind(this);
     this.getAll = this.getAll.bind(this);
     this.insert = this.insert.bind(this);

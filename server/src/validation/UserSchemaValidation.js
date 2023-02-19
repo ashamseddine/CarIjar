@@ -1,3 +1,5 @@
+const Joi = require('joi');
+
 const userJoiSchema = Joi.object({
   first_name: Joi.string()
     .regex(/^[A-Za-z]+$/)

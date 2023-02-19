@@ -1,4 +1,4 @@
-const { responseapi } = require("../../config/reponseapi");
+const { responseapi } = require("../../config/responseapi");
 
 const SchemaValidator = (schema, data) => {
   const { error } = schema.validate(data);

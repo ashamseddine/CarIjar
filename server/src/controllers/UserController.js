@@ -45,8 +45,7 @@ class UserController extends Controller {
   async signUp(req, res) {
     try {
       const { error } = SchemaValidator(UserJoiSchema, req.body);
-      if (error)     return res.statusCode(400).send(responseapi.error(error));
-
+      if (error) return res.statusCode(400).send(responseapi.error(error));
 
       const { email, password } = req.body;
 
@@ -77,5 +76,4 @@ class UserController extends Controller {
     }
   }
 }
-
 module.exports = new UserController(userService);
