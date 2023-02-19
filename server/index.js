@@ -8,14 +8,13 @@ const numCPU = os.cpus().length;
 const PORT = process.env.PORT ?? 5000;
 
 connection(() => {
-  if(cluster.isMaster){
-    for(let i = 0; i < numCPU; i++) {
+  if (cluster.isMaster) {
+    for (let i = 0; i < numCPU; i++) {
       cluster.fork();
     }
   } else {
     server.listen(PORT, () => {
-      console.log(`Server started listening on port ${PORT}`, '---- index');
-    })
+      console.log(`Server started listening on port ${PORT}`, "---- index");
+    });
   }
-})
-
+});
