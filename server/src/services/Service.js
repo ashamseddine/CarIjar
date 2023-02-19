@@ -1,3 +1,5 @@
+// TODO: fix console.log(errors) to send response errors.
+
 class Service {
   constructor(model) {
     this.model = model;
@@ -23,7 +25,7 @@ class Service {
     } catch (err) {
       console.log(err.message, "---- service");
     }
-    if (!item) console.log(err.message, "---- service");
+    if (!item) console.log("error ---- service");
     return {
       error: false,
       statusCode: 200,
@@ -32,16 +34,15 @@ class Service {
   }
 
   async findOne(fields) {
+    console.log("hello findOne");
     let item = undefined;
     try {
-      item = await this.model.findOne({
-        $and: fields,
-      });
+      item = await this.model.findOne(fields);
 
     } catch (err) {
       console.log(err.message, "---- service");
     }
-    if (!item) console.log(err.message, "---- service");
+    if (!item) console.log("err.message ---- service");
     return {
       error: false,
       statusCode: 200,
@@ -52,15 +53,11 @@ class Service {
   async exist(fields) {
     let item = undefined;
     try {
-      item = await this.model.findOne({
-        $and: fields,
-      });
-
+      item = await this.model.findOne(fields);
     } catch (err) {
       console.log(err.message, "---- service");
     }
-    if (!item) return false;
-    return true;
+    return item !== null;
   }
 
   async getAll(sort = {}) {
@@ -104,7 +101,7 @@ class Service {
     } catch (err) {
       console.log(err.message, "---- service");
     }
-    if (!item) console.log(err.message, "---- service");
+    if (!item) console.log("err.message ---- service");
     return {
       error: false,
       statusCode: 202,
@@ -117,7 +114,7 @@ class Service {
       upsert: true,
       new: true,
     });
-    if (!item) console.log(err.message, "---- service");
+    if (!item) console.log("err.message ---- service");
 
     return {
       error: false,
@@ -128,7 +125,7 @@ class Service {
 
   async findOneAndUpdate(query, update) {
     const item = await this.model.findOneAndUpdate(query, update);
-    if (!item) console.log(err.message, "---- service");
+    if (!item) console.log("err.message ---- service");
 
     return {
       error: false,

@@ -21,20 +21,22 @@ const initializeMiddleware = (app) => {
   passport.use(
     new LocalStrategy(
       {
-        emailField: "email",
+        usernameField: "email",
         passwordField: "password",
       },
       async (email, password, done) => {
         try {
-          const user = await userService.findOne({ email });
-          if (!user) {
+          const user = await userService.findOne({ email: email });
+          if (!user.item) {
             return done(null, false, { message: "Incorrect email." });
           }
-          const isMatch = await bcrypt.compare(password, user.password);
+          console.log("debug user", user.item)
+          const isMatch = await bcrypt.compare(password, user.item.password);
           if (!isMatch) {
             return done(null, false, { message: "Incorrect password." });
           }
-          return done(null, user);
+          console.log("debug isMatch",isMatch)
+          return done(null, user.item);
         } catch (error) {
           return done(error);
         }

@@ -5,6 +5,7 @@ const UserService = require("../services/UserService");
 const { generateToken } = require("../helpers/utils/Authentication");
 const SchemaValidator = require("../helpers/utils/SchemaValidator");
 const UserJoiSchema = require("../validation/UserSchemaValidation");
+const bcrypt = require("bcrypt");
 
 const userService = new UserService(User);
 
@@ -19,6 +20,7 @@ class UserController extends Controller {
 
   async signIn(req, res, next) {
     try {
+      console.log(req.body);
       const token = generateToken(req.user.id);
 
       return res
@@ -33,10 +35,12 @@ class UserController extends Controller {
 
   async signOut(req, res, next) {
     try {
-      req.logout();
-      return res
-        .status(200)
-        .send(this.responseapi.success("Signed out successfully", [], 200));
+      req.logout((err) => {
+        if (err) throw err;
+        return res
+          .status(200)
+          .send(this.responseapi.success("Signed out successfully", [], 200));
+      });
     } catch (err) {
       return res.status(500).send(this.responseapi.error(err));
     }
@@ -44,12 +48,12 @@ class UserController extends Controller {
 
   async signUp(req, res) {
     try {
-      const { error } = SchemaValidator(UserJoiSchema, req.body);
+      const error = SchemaValidator(UserJoiSchema, req.body);
       if (error) return res.statusCode(400).send(responseapi.error(error));
 
       const { email, password } = req.body;
 
-      const existingUser = await this.service.exist({ email });
+      const existingUser = await this.service.exist({ email: email });
       if (existingUser) {
         return res
           .status(400)
@@ -71,7 +75,7 @@ class UserController extends Controller {
             201
           )
         );
-    } catch (error) {
+    } catch (err) {
       return res.status(500).send(this.responseapi.error(err));
     }
   }

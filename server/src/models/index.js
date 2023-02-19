@@ -3,4 +3,5 @@ const Car = require("./Car");
 
 module.exports = {
   User,
+  Car
 };
